@@ -4,19 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository state
 
-This repo currently contains only the system design spec for Dwarven Engineering — there is no
+This repo currently contains only design documentation for Dwarven Engineering — there is no
 application code, package manifest, build system, or test suite yet. Don't invent build/lint/test
 commands; none exist. Start here before writing any implementation code, since the architecture
-decisions below (especially the peer-to-peer pivot) constrain how any future client/service code
-should be structured.
+decisions below (especially the peer-to-peer pivot, and the Bevy engine/ECS design once
+implementation starts) constrain how any future client/service code should be structured.
 
 ## Reading the spec
 
-Full index: [`docs/system-design/README.md`](docs/system-design/README.md). Read the numbered
-files in order (`00-overview.md` → `07-risks-and-open-questions.md`); later files assume the
-decisions recorded in earlier ones. `03-architecture.md` is the one most future implementation
-work will need to revisit — it names the component inventory that everything else (`05`, `06`)
-cross-references.
+Two doc sets, read `system-design` before `game-design` (the latter assumes the former's
+decisions and cross-links into it rather than repeating them):
+
+- [`docs/system-design/README.md`](docs/system-design/README.md) — multiplayer P2P network
+  architecture. Read the numbered files in order (`00-overview.md` →
+  `07-risks-and-open-questions.md`); later files assume the decisions recorded in earlier ones.
+  `03-architecture.md` is the one most future implementation work will need to revisit — it names
+  the component inventory that everything else (`05`, `06`) cross-references.
+- [`docs/game-design/README.md`](docs/game-design/README.md) — gameplay design (survival/
+  crafting/factory-automation pillars, production-milestone progression) and the Rust/Bevy engine
+  skeleton (plugin architecture, ECS component design, project layout, cross-platform build,
+  milestone roadmap) an implementation agent should follow to start writing the actual game code.
 
 ## The big picture
 
