@@ -1,0 +1,20 @@
+{
+  "layout": "lr",
+  "ranks": [
+    ["host"],
+    ["p1", "p2", "p3", "save"]
+  ],
+  "nodes": {
+    "host": {"label": "Host Client (peer)", "shape": "hex"},
+    "p1": {"label": "Connected Player 1", "shape": "rect"},
+    "p2": {"label": "Connected Player 2", "shape": "rect"},
+    "p3": {"label": "Connected Player N (up to 8-16)", "shape": "rect"},
+    "save": {"label": "Local save file (host disk)", "shape": "circle"}
+  },
+  "edges": [
+    {"from": "host", "to": "p1", "style": "solid", "pointed": true, "label": "custom UDP, direct P2P (state delta)"},
+    {"from": "host", "to": "p2", "style": "solid", "pointed": true, "label": "custom UDP, direct P2P (state delta)"},
+    {"from": "host", "to": "p3", "style": "solid", "pointed": true, "label": "custom UDP, direct P2P (state delta)"},
+    {"from": "host", "to": "save", "style": "solid", "pointed": true, "label": "periodic snapshot"}
+  ]
+}

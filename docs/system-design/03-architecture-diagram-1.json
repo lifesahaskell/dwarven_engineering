@@ -1,0 +1,28 @@
+{
+  "layout": "lr",
+  "ranks": [
+    ["client"],
+    ["auth", "patch", "analytics_worker", "relay"],
+    ["account_db", "analytics_db", "host"]
+  ],
+  "nodes": {
+    "client": {"label": "Client", "shape": "rect"},
+    "auth": {"label": "Auth/Account Service", "shape": "rect"},
+    "patch": {"label": "Patch/Content Delivery", "shape": "rect"},
+    "analytics_worker": {"label": "Analytics/Telemetry Worker", "shape": "hex"},
+    "relay": {"label": "Relay/Rendezvous Service", "shape": "rect"},
+    "account_db": {"label": "Account/Profile DB", "shape": "circle"},
+    "analytics_db": {"label": "Analytics store", "shape": "circle"},
+    "host": {"label": "Host Client (peer)", "shape": "hex"}
+  },
+  "edges": [
+    {"from": "client", "to": "auth", "style": "solid", "pointed": true, "label": "login"},
+    {"from": "client", "to": "patch", "style": "solid", "pointed": true, "label": "patch/content check"},
+    {"from": "client", "to": "analytics_worker", "style": "dotted", "pointed": true, "label": "anonymized telemetry"},
+    {"from": "client", "to": "relay", "style": "solid", "pointed": true, "label": "invite code + session token"},
+    {"from": "auth", "to": "account_db", "style": "solid", "pointed": true, "label": "reads/writes"},
+    {"from": "analytics_worker", "to": "analytics_db", "style": "solid", "pointed": true, "label": "writes"},
+    {"from": "relay", "to": "host", "style": "solid", "pointed": true, "label": "brokers NAT traversal"},
+    {"from": "client", "to": "host", "style": "solid", "pointed": true, "label": "direct P2P handshake (Relay steps out)"}
+  ]
+}
