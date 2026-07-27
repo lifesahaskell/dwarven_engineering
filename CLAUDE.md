@@ -2,13 +2,24 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Before committing
+
+- Always run `scripts/run_checks.sh` (or its three commands individually: `cargo fmt --all
+  --check`, `cargo clippy --all-targets --all-features -- -D warnings`, `cargo test
+  --all-features`) before making a commit — tests and lint both need to pass, not just tests.
+- Always use the same lint CI uses. That means `cargo fmt` (not the bare `rustfmt` binary on
+  hand-picked files — it won't match `cargo fmt --all --check`) and `cargo clippy --all-targets
+  --all-features -- -D warnings` (not a bare `cargo clippy`, which misses test/bench targets and
+  won't fail on warnings).
+
 ## Repository state
 
-This repo currently contains only design documentation for Dwarven Engineering — there is no
-application code, package manifest, build system, or test suite yet. Don't invent build/lint/test
-commands; none exist. Start here before writing any implementation code, since the architecture
-decisions below (especially the peer-to-peer pivot, and the Bevy engine/ECS design once
-implementation starts) constrain how any future client/service code should be structured.
+M0-M3 of the roadmap (`docs/game-design/06-roadmap.md`) are implemented: a single-crate Bevy app
+(`src/`) with `world_gen`, `rendering_camera`, `input`, `crafting`, and `structures` plugins, a
+headless `tests/` suite, and CI (`.github/workflows/ci.yml` / `scripts/run_checks.sh`). Read the
+architecture decisions below (especially the peer-to-peer pivot, and the Bevy engine/ECS design)
+before writing more implementation code — they constrain how any future client/service code
+should be structured.
 
 ## Reading the spec
 
