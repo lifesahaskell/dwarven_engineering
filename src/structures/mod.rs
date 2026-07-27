@@ -9,17 +9,21 @@ use bevy::prelude::*;
 use serde::Deserialize;
 
 use crate::AppState;
-use crate::core::ItemId;
+use crate::core::{FactoryKind, ItemId};
 use crate::crafting::Inventory;
 use crate::world_gen::PlayerCharacter;
 
-/// A kind of placeable structure. `Wall` (first defensive structure) and `Factory(FactoryKind)`
-/// arrive at M6/M4 respectively (`docs/game-design/06-roadmap.md`) — not added speculatively.
+/// A kind of placeable structure. `Wall` (first defensive structure) arrives at M6
+/// (`docs/game-design/06-roadmap.md`) — not added speculatively. `Factory` carries a `FactoryKind`
+/// rather than being split into its own top-level entity kind, per `03-ecs-design.md`'s entity
+/// mapping notes; `factory_sim` attaches the rest of a Factory's instance data reactively once
+/// placement (this module) spawns it.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Deserialize, Component)]
 pub enum StructureKind {
     Storage,
     Workbench,
     Furnace,
+    Factory(FactoryKind),
 }
 
 pub struct StructureDef {

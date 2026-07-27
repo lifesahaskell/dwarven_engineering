@@ -1,5 +1,5 @@
-// Tier 0/1 starter set only (docs/game-design/01-progression-milestones.md) — add more items as
-// later recipes need them, not speculatively.
+// Tier 0/1/2 starter set only (docs/game-design/01-progression-milestones.md) — add more items
+// as later recipes need them, not speculatively.
 [
     (
         id: "wood",
@@ -24,5 +24,17 @@
         name: "Pickaxe",
         max_stack: 1,
         category: Tool,
+    ),
+    (
+        id: "ore",
+        name: "Ore",
+        max_stack: 64,
+        category: RawResource,
+    ),
+    (
+        id: "ingot",
+        name: "Ingot",
+        max_stack: 64,
+        category: Component,
     ),
 ]

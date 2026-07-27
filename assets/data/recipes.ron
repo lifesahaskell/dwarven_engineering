@@ -1,5 +1,7 @@
-// Tier 0/1 hand-craft only (docs/game-design/06-roadmap.md M2) — every recipe here is
-// `HandCraft`; station types that run without the player present arrive at M3+.
+// Tier 0/1 hand-craft only, plus the first Tier 2 automated recipe (docs/game-design/06-roadmap.md
+// M2/M4). `station`/`craft_time_secs` aren't enforced for hand-crafting (any recipe can be
+// hand-crafted regardless of station) — `factory_sim::run_factories` is the first system that
+// actually reads `craft_time_secs`.
 [
     (
         id: "axe",
@@ -14,5 +16,13 @@
         outputs: [("pickaxe", 1)],
         craft_time_secs: 2.0,
         station: HandCraft,
+    ),
+    (
+        id: "ingot",
+        inputs: [("ore", 1)],
+        outputs: [("ingot", 1)],
+        craft_time_secs: 2.0,
+        station: Furnace,
+        requires_tech: Some("early_automation"),
     ),
 ]

@@ -14,8 +14,17 @@ pub struct ItemId(pub String);
 #[serde(transparent)]
 pub struct RecipeId(pub String);
 
-/// Identifies a row in the future `TechTree` (M4). Exists now only so `RecipeDef::requires_tech`
-/// has a type to hold — no `TechTree` resource reads it yet.
+/// Identifies a row in `tech_tree::TechTree`, and gates `RecipeDef::requires_tech`.
 #[derive(Clone, PartialEq, Eq, Hash, Debug, Deserialize)]
 #[serde(transparent)]
 pub struct TechNodeId(pub String);
+
+/// Identifies a row in `factory_sim::FactoryDatabase`. Unlike the other ids on this page, this is
+/// a closed enum, not a RON-authored string — factory *machine types* are a small, code-defined
+/// set (per `03-ecs-design.md`'s `StructureKind::Factory(FactoryKind)`), not an open-ended
+/// content catalog. Lives here (not in `factory_sim`) so `structures` and `tech_tree` can both
+/// reference it without depending on `factory_sim` itself.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Deserialize)]
+pub enum FactoryKind {
+    Smelter,
+}

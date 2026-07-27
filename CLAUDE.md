@@ -14,12 +14,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository state
 
-M0-M3 of the roadmap (`docs/game-design/06-roadmap.md`) are implemented: a single-crate Bevy app
-(`src/`) with `world_gen`, `rendering_camera`, `input`, `crafting`, and `structures` plugins, a
-headless `tests/` suite, and CI (`.github/workflows/ci.yml` / `scripts/run_checks.sh`). Read the
-architecture decisions below (especially the peer-to-peer pivot, and the Bevy engine/ECS design)
-before writing more implementation code — they constrain how any future client/service code
-should be structured.
+M0-M4 of the roadmap (`docs/game-design/06-roadmap.md`) are implemented: a single-crate Bevy app
+(`src/`) with `world_gen`, `rendering_camera`, `input`, `crafting`, `structures`, `tech_tree`, and
+`factory_sim` plugins, a headless `tests/` suite, and CI (`.github/workflows/ci.yml` /
+`scripts/run_checks.sh`). Read the architecture decisions below (especially the peer-to-peer
+pivot, and the Bevy engine/ECS design) before writing more implementation code — they constrain
+how any future client/service code should be structured.
 
 ## Reading the spec
 

@@ -1,0 +1,10 @@
+// First Factory kind only (docs/game-design/06-roadmap.md M4, Tier 2 "ore -> ingot" chain).
+// Footprint/build_cost live in structures.ron, not here — see factory_sim::FactoryRon.
+[
+    (
+        kind: Smelter,
+        name: "Smelter",
+        power_draw: 5.0,
+        recipe_slots: 1,
+    ),
+]

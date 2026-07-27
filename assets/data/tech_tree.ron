@@ -1,0 +1,27 @@
+// Minimal tech tree (docs/game-design/06-roadmap.md M4, docs/game-design/01-progression-
+// milestones.md) — just enough nodes to exercise prerequisite chaining: a root node, a node
+// unlocked transitively through it, and a node whose prerequisite is never defined (so it stays
+// locked) — content for its actual prerequisite arrives with a later tier's milestone.
+[
+    (
+        id: "early_automation",
+        name: "Early Automation",
+        prerequisites: [],
+        unlocks: [Factory(Smelter), Recipe("ingot")],
+        milestone_tier: EarlyAutomation,
+    ),
+    (
+        id: "powered_production",
+        name: "Powered Production",
+        prerequisites: ["early_automation"],
+        unlocks: [],
+        milestone_tier: PoweredProduction,
+    ),
+    (
+        id: "integrated_complex",
+        name: "Integrated Complex",
+        prerequisites: ["multi_input_assembly"],
+        unlocks: [],
+        milestone_tier: IntegratedComplex,
+    ),
+]

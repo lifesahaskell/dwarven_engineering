@@ -1,12 +1,12 @@
 use bevy::prelude::*;
-use dwarven_engineering::core::{ItemId, RecipeId};
+use dwarven_engineering::core::{ItemId, RecipeId, TechNodeId};
 use dwarven_engineering::{
     CraftRequestEvent, Inventory, ItemCategory, ItemDatabase, PLAYER_INVENTORY_SLOTS,
-    PlayerCharacter, RecipeDatabase, StationKind,
+    PlayerCharacter, RecipeDatabase, StationKind, UnlockedTech,
 };
 
 mod common;
-use common::in_game_app;
+use common::{in_game_app, run_one_fixed_tick};
 
 fn item_id(id: &str) -> ItemId {
     ItemId(id.to_string())
@@ -14,16 +14,6 @@ fn item_id(id: &str) -> ItemId {
 
 fn recipe_id(id: &str) -> RecipeId {
     RecipeId(id.to_string())
-}
-
-/// Runs one `FixedUpdate` tick deterministically, independent of wall-clock time — see
-/// `tests/input_test.rs` for why `app.update()` alone isn't reliable here.
-fn run_one_fixed_tick(app: &mut App) {
-    let timestep = app.world().resource::<Time<Fixed>>().timestep();
-    app.world_mut()
-        .resource_mut::<Time<Fixed>>()
-        .advance_by(timestep);
-    app.world_mut().run_schedule(FixedUpdate);
 }
 
 /// Adds `count` of `item` straight into the player's inventory, bypassing crafting — stands in
@@ -95,6 +85,33 @@ fn crafting_an_axe_consumes_inputs_and_produces_the_output() {
     assert_eq!(inventory.count(&item_id("axe")), 1, "axe was crafted");
     assert_eq!(inventory.count(&item_id("wood")), 0, "wood was consumed");
     assert_eq!(inventory.count(&item_id("stone")), 0, "stone was consumed");
+}
+
+#[test]
+fn crafting_is_ignored_when_the_recipes_tech_node_is_not_unlocked() {
+    let mut app = in_game_app();
+
+    give_player(&mut app, &item_id("ore"), 1);
+    app.world_mut()
+        .resource_mut::<UnlockedTech>()
+        .0
+        .remove(&TechNodeId("early_automation".to_string()));
+
+    app.world_mut().write_message(CraftRequestEvent {
+        recipe: recipe_id("ingot"),
+    });
+    run_one_fixed_tick(&mut app);
+
+    let mut query = app
+        .world_mut()
+        .query_filtered::<&Inventory, With<PlayerCharacter>>();
+    let inventory = query.single(app.world()).expect("player has an inventory");
+
+    assert_eq!(
+        inventory.count(&item_id("ingot")),
+        0,
+        "early_automation isn't unlocked, so ingot can't be crafted"
+    );
 }
 
 #[test]

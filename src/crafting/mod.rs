@@ -10,6 +10,7 @@ use serde::Deserialize;
 
 use crate::AppState;
 use crate::core::{ItemId, RecipeId, TechNodeId};
+use crate::tech_tree::UnlockedTech;
 use crate::world_gen::PlayerCharacter;
 
 /// Player's personal inventory capacity. Easily tunable — not a balance decision.
@@ -237,6 +238,7 @@ fn handle_craft_requests(
     mut requests: MessageReader<CraftRequestEvent>,
     recipes: Res<RecipeDatabase>,
     items: Res<ItemDatabase>,
+    unlocked: Res<UnlockedTech>,
     mut inventories: Query<&mut Inventory, With<PlayerCharacter>>,
 ) {
     let Ok(mut inventory) = inventories.single_mut() else {
@@ -247,6 +249,13 @@ fn handle_craft_requests(
         let Some(recipe) = recipes.0.get(&request.recipe) else {
             continue;
         };
+        let tech_ok = match &recipe.requires_tech {
+            Some(tech) => unlocked.0.contains(tech),
+            None => true,
+        };
+        if !tech_ok {
+            continue;
+        }
         let has_inputs = recipe
             .inputs
             .iter()

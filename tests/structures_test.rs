@@ -6,19 +6,10 @@ use dwarven_engineering::{
 };
 
 mod common;
-use common::in_game_app;
+use common::{in_game_app, run_one_fixed_tick};
 
 fn item_id(id: &str) -> ItemId {
     ItemId(id.to_string())
-}
-
-/// Runs one `FixedUpdate` tick deterministically — see `tests/input_test.rs`.
-fn run_one_fixed_tick(app: &mut App) {
-    let timestep = app.world().resource::<Time<Fixed>>().timestep();
-    app.world_mut()
-        .resource_mut::<Time<Fixed>>()
-        .advance_by(timestep);
-    app.world_mut().run_schedule(FixedUpdate);
 }
 
 fn give_player(app: &mut App, item: &ItemId, count: u32) {

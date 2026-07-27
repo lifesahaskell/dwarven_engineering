@@ -4,20 +4,29 @@ use bevy::state::app::StatesPlugin;
 
 pub mod core;
 pub mod crafting;
+pub mod factory_sim;
 pub mod input;
 pub mod rendering_camera;
 pub mod structures;
+pub mod tech_tree;
 pub mod world_gen;
 
 pub use crafting::{
     CraftRequestEvent, CraftingPlugin, Inventory, ItemCategory, ItemDatabase, ItemDef, ItemStack,
     PLAYER_INVENTORY_SLOTS, RecipeDatabase, RecipeDef, StationKind,
 };
+pub use factory_sim::{
+    BeltSegment, Direction, FactoryDatabase, FactoryDef, FactorySimPlugin, FactoryState,
+    SimulationDetailLevel,
+};
 pub use input::{InputPlugin, PLAYER_MOVE_SPEED, PlayerMoveIntent};
 pub use rendering_camera::{CAMERA_OFFSET, RenderingCameraPlugin};
 pub use structures::{
     PlaceStructureRequest, Structure, StructureDatabase, StructureDef, StructureKind,
     StructurePosition, StructuresPlugin,
+};
+pub use tech_tree::{
+    MilestoneTier, TechNodeDef, TechTree, TechTreePlugin, UnlockTarget, UnlockedTech,
 };
 pub use world_gen::{
     Chunk, ChunkCoord, ChunkLoadState, LOCAL_PLAYER, PlayerCharacter, PlayerId, WorldGenPlugin,
@@ -38,7 +47,7 @@ pub enum AppState {
 
 /// Aggregator for every gameplay plugin, per `docs/game-design/02-bevy-architecture.md`.
 ///
-/// The remaining gameplay plugins (`survival`, `factory_sim`, ...) land from M4 onward and get
+/// The remaining gameplay plugins (`survival`, `colonist_ai`, ...) land from M5 onward and get
 /// `.add(...)`ed here.
 pub struct GamePlugins;
 
@@ -49,8 +58,11 @@ impl PluginGroup for GamePlugins {
             .add(WorldGenPlugin)
             .add(RenderingCameraPlugin)
             .add(InputPlugin)
+            .add(tech_tree::TechTreePlugin)
             .add(CraftingPlugin)
+            .add(FactorySimPlugin)
             .add(StructuresPlugin)
+            .add(SystemOrderingPlugin)
     }
 }
 
@@ -73,4 +85,25 @@ impl Plugin for AppStatePlugin {
 // system exists.
 fn enter_game_immediately(mut next_state: ResMut<NextState<AppState>>) {
     next_state.set(AppState::InGame);
+}
+
+/// Installs the `FixedUpdate` `SystemSet` ordering from `docs/game-design/03-ecs-design.md`:
+/// `InputSet -> ... -> CraftingSet -> FactorySimSet -> ... -> StructureSet` (the `SurvivalSet`/
+/// `ColonistAiSet` slots in that chain don't exist until M5/M6). A separate plugin only so it can
+/// run after every plugin that owns one of these sets has registered its systems.
+struct SystemOrderingPlugin;
+
+impl Plugin for SystemOrderingPlugin {
+    fn build(&self, app: &mut App) {
+        app.configure_sets(
+            FixedUpdate,
+            (
+                input::InputSet,
+                crafting::CraftingSet,
+                factory_sim::FactorySimSet,
+                structures::StructureSet,
+            )
+                .chain(),
+        );
+    }
 }
