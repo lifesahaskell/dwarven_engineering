@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use dwarven_engineering::{PlayerCharacter, PlayerMoveIntent, PLAYER_MOVE_SPEED};
+use dwarven_engineering::{PLAYER_MOVE_SPEED, PlayerCharacter, PlayerMoveIntent};
 
 mod common;
 use common::in_game_app;
@@ -9,9 +9,8 @@ fn a_move_intent_moves_the_player_along_world_x_for_one_fixed_tick() {
     let mut app = in_game_app();
 
     // Bypass the keyboard-read system: it reads real device state, which isn't testable headlessly.
-    app.world_mut().write_message(PlayerMoveIntent {
-        direction: Vec2::X,
-    });
+    app.world_mut()
+        .write_message(PlayerMoveIntent { direction: Vec2::X });
 
     // `Time<Fixed>`'s accumulator is fed from real elapsed time, so `app.update()` may run
     // `FixedUpdate` zero or many times. Advance the fixed clock by exactly one timestep and run

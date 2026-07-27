@@ -1,0 +1,22 @@
+// First buildable structures only (docs/game-design/06-roadmap.md M3) — storage, workbench,
+// furnace. `Wall` (first defensive structure) and `Factory` arrive at M6/M4 respectively.
+[
+    (
+        kind: Storage,
+        name: "Storage",
+        footprint: (1, 1),
+        build_cost: [("wood", 5)],
+    ),
+    (
+        kind: Workbench,
+        name: "Workbench",
+        footprint: (2, 1),
+        build_cost: [("wood", 8), ("stone", 4)],
+    ),
+    (
+        kind: Furnace,
+        name: "Furnace",
+        footprint: (1, 1),
+        build_cost: [("stone", 10)],
+    ),
+]

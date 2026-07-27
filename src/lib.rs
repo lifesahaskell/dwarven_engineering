@@ -6,6 +6,7 @@ pub mod core;
 pub mod crafting;
 pub mod input;
 pub mod rendering_camera;
+pub mod structures;
 pub mod world_gen;
 
 pub use crafting::{
@@ -14,6 +15,10 @@ pub use crafting::{
 };
 pub use input::{InputPlugin, PLAYER_MOVE_SPEED, PlayerMoveIntent};
 pub use rendering_camera::{CAMERA_OFFSET, RenderingCameraPlugin};
+pub use structures::{
+    PlaceStructureRequest, Structure, StructureDatabase, StructureDef, StructureKind,
+    StructurePosition, StructuresPlugin,
+};
 pub use world_gen::{
     Chunk, ChunkCoord, ChunkLoadState, LOCAL_PLAYER, PlayerCharacter, PlayerId, WorldGenPlugin,
 };
@@ -33,7 +38,7 @@ pub enum AppState {
 
 /// Aggregator for every gameplay plugin, per `docs/game-design/02-bevy-architecture.md`.
 ///
-/// The remaining gameplay plugins (`survival`, `factory_sim`, ...) land from M3 onward and get
+/// The remaining gameplay plugins (`survival`, `factory_sim`, ...) land from M4 onward and get
 /// `.add(...)`ed here.
 pub struct GamePlugins;
 
@@ -45,6 +50,7 @@ impl PluginGroup for GamePlugins {
             .add(RenderingCameraPlugin)
             .add(InputPlugin)
             .add(CraftingPlugin)
+            .add(StructuresPlugin)
     }
 }
 

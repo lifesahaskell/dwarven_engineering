@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use dwarven_engineering::{PlayerCharacter, CAMERA_OFFSET};
+use dwarven_engineering::{CAMERA_OFFSET, PlayerCharacter};
 
 mod common;
 use common::in_game_app;
