@@ -1,0 +1,11 @@
+# System libraries Bevy's build scripts need on Linux. Single source of truth: read by both
+# .github/workflows/ci.yml and scripts/run_checks.sh, so the CI runner and a dev box cannot
+# silently drift apart. Lines starting with '#' are ignored by both readers.
+#
+# libwayland-dev is not optional despite the app running fine under X11: Bevy 0.19's default
+# features build wayland-sys unconditionally, and its build script pkg-config's wayland-client.
+libasound2-dev
+libudev-dev
+libx11-dev
+libxkbcommon-dev
+libwayland-dev

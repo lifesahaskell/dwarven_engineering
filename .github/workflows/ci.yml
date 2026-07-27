@@ -19,7 +19,7 @@ jobs:
       - name: Install Linux build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libasound2-dev libudev-dev libx11-dev libxkbcommon-dev
+          grep -v '^#' scripts/linux-build-deps.txt | xargs sudo apt-get install -y
       - name: Check formatting
         run: cargo fmt --all --check
       - name: Clippy
@@ -41,6 +41,6 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libasound2-dev libudev-dev libx11-dev libxkbcommon-dev
+          grep -v '^#' scripts/linux-build-deps.txt | xargs sudo apt-get install -y
       - name: Test
         run: cargo test --all-features
