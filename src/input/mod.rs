@@ -10,8 +10,8 @@
 use bevy::input::InputPlugin as BevyInputPlugin;
 use bevy::prelude::*;
 
-use crate::world_gen::PlayerCharacter;
 use crate::AppState;
+use crate::world_gen::PlayerCharacter;
 
 /// Player movement speed in world units per second. Easily tunable — not a balance decision.
 pub const PLAYER_MOVE_SPEED: f32 = 5.0;
@@ -38,10 +38,7 @@ impl Plugin for InputPlugin {
             app.add_plugins(BevyInputPlugin);
         }
         app.add_message::<PlayerMoveIntent>()
-            .add_systems(
-                Update,
-                write_move_intent.run_if(in_state(AppState::InGame)),
-            )
+            .add_systems(Update, write_move_intent.run_if(in_state(AppState::InGame)))
             .add_systems(
                 FixedUpdate,
                 apply_move_intent

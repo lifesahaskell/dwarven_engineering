@@ -1,0 +1,18 @@
+// Tier 0/1 hand-craft only (docs/game-design/06-roadmap.md M2) — every recipe here is
+// `HandCraft`; station types that run without the player present arrive at M3+.
+[
+    (
+        id: "axe",
+        inputs: [("wood", 3), ("stone", 2)],
+        outputs: [("axe", 1)],
+        craft_time_secs: 2.0,
+        station: HandCraft,
+    ),
+    (
+        id: "pickaxe",
+        inputs: [("wood", 2), ("stone", 3)],
+        outputs: [("pickaxe", 1)],
+        craft_time_secs: 2.0,
+        station: HandCraft,
+    ),
+]

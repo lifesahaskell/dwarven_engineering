@@ -1,0 +1,28 @@
+// Tier 0/1 starter set only (docs/game-design/01-progression-milestones.md) — add more items as
+// later recipes need them, not speculatively.
+[
+    (
+        id: "wood",
+        name: "Wood",
+        max_stack: 64,
+        category: RawResource,
+    ),
+    (
+        id: "stone",
+        name: "Stone",
+        max_stack: 64,
+        category: RawResource,
+    ),
+    (
+        id: "axe",
+        name: "Axe",
+        max_stack: 1,
+        category: Tool,
+    ),
+    (
+        id: "pickaxe",
+        name: "Pickaxe",
+        max_stack: 1,
+        category: Tool,
+    ),
+]

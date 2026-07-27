@@ -2,14 +2,20 @@ use bevy::app::PluginGroupBuilder;
 use bevy::prelude::*;
 use bevy::state::app::StatesPlugin;
 
+pub mod core;
+pub mod crafting;
 pub mod input;
 pub mod rendering_camera;
 pub mod world_gen;
 
-pub use input::{InputPlugin, PlayerMoveIntent, PLAYER_MOVE_SPEED};
-pub use rendering_camera::{RenderingCameraPlugin, CAMERA_OFFSET};
+pub use crafting::{
+    CraftRequestEvent, CraftingPlugin, Inventory, ItemCategory, ItemDatabase, ItemDef, ItemStack,
+    PLAYER_INVENTORY_SLOTS, RecipeDatabase, RecipeDef, StationKind,
+};
+pub use input::{InputPlugin, PLAYER_MOVE_SPEED, PlayerMoveIntent};
+pub use rendering_camera::{CAMERA_OFFSET, RenderingCameraPlugin};
 pub use world_gen::{
-    Chunk, ChunkCoord, ChunkLoadState, PlayerCharacter, PlayerId, WorldGenPlugin, LOCAL_PLAYER,
+    Chunk, ChunkCoord, ChunkLoadState, LOCAL_PLAYER, PlayerCharacter, PlayerId, WorldGenPlugin,
 };
 
 /// Top-level app state gating which systems run, per `docs/game-design/02-bevy-architecture.md`.
@@ -27,7 +33,7 @@ pub enum AppState {
 
 /// Aggregator for every gameplay plugin, per `docs/game-design/02-bevy-architecture.md`.
 ///
-/// The remaining gameplay plugins (`survival`, `crafting`, ...) land from M2 onward and get
+/// The remaining gameplay plugins (`survival`, `factory_sim`, ...) land from M3 onward and get
 /// `.add(...)`ed here.
 pub struct GamePlugins;
 
@@ -38,6 +44,7 @@ impl PluginGroup for GamePlugins {
             .add(WorldGenPlugin)
             .add(RenderingCameraPlugin)
             .add(InputPlugin)
+            .add(CraftingPlugin)
     }
 }
 

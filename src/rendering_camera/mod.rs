@@ -3,8 +3,8 @@
 
 use bevy::prelude::*;
 
-use crate::world_gen::PlayerCharacter;
 use crate::AppState;
+use crate::world_gen::PlayerCharacter;
 
 /// Fixed camera offset from the player, giving the angled-overhead "2.5D" look.
 /// Easily tunable — not a considered composition decision.

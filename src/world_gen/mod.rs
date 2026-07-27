@@ -6,6 +6,7 @@
 use bevy::prelude::*;
 
 use crate::AppState;
+use crate::crafting::{Inventory, PLAYER_INVENTORY_SLOTS};
 
 /// Half-extent of the spawned grid: coords run `-CHUNK_GRID_RADIUS..=CHUNK_GRID_RADIUS` on both
 /// axes, so a radius of 2 gives the 5x5 / 25-chunk grid M1 asks for. Easily tunable.
@@ -71,5 +72,6 @@ fn spawn_local_player(mut commands: Commands) {
             player_id: LOCAL_PLAYER,
         },
         Transform::from_xyz(0.0, 0.0, 0.0),
+        Inventory::new(PLAYER_INVENTORY_SLOTS),
     ));
 }
